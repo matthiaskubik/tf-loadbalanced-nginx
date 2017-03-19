@@ -1,4 +1,4 @@
-# Load Balanced Nginx
+# Load Balanced Web Servers
 
 A Terraform configuration template to deploy an IBM Cloud load balancer (as a service) and _N_ number of web servers.
 
