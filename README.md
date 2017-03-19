@@ -47,7 +47,7 @@ This template will create the following resources:
 
 # Usage
 
-This is not a module, it is a terraform configuration template that can be cloned to be used. A module is used in this template for creating the load balancer and load balancer service group; it can be found at https://github.com/ckelner/tf_ibmcloud_local_loadbalancer/tree/v1.0.
+This is not a module, it is a terraform configuration template that can be cloned to be used. A module is used in this template for creating the load balancer and load balancer service group; it can be found at https://github.com/ckelner/tf_ibmcloud_local_loadbalancer/tree/v1.1.
 
 Variables can be defined or overwritten using `terraform.tfvars`. Currently `node_count` and `public_key` are being defined and overwritten.
 
