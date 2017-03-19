@@ -11,76 +11,6 @@ provider "ibmcloud" {
 }
 
 ##############################################################################
-# Variables
-##############################################################################
-# Required for the IBM Cloud provider
-variable ibmid {
-  type = "string"
-  description = "Your IBM-ID."
-}
-# Required for the IBM Cloud provider
-variable ibmidpw {
-  type = "string"
-  description = "The password for your IBM-ID."
-}
-# Required to target the correct SL account
-variable slaccountnum {
-  type = "string"
-  description = "Your Softlayer account number."
-}
-# The datacenter to deploy to
-variable datacenter {
-  default = "dal06"
-}
-# The SSH Key to use on the Nginx virtual machines
-# Defined in variables.tfvars
-variable public_key {
-  description = "Your public SSH key"
-}
-# The number of Nginx nodes to deploy; You can adjust this number to create more
-# virtual machines in the IBM Cloud; adjusting this number also updates the
-# loadbalancer with the new node
-variable node_count {
-  default = 2
-}
-# The target operating system for the Nginx nodes
-variable nginx_operating_system {
-  default = "UBUNTU_LATEST"
-}
-# The port that Nginx and the loadbalancer will serve traffic on
-variable port {
-  default = "80"
-}
-# The number of cores each Nginx virtual guest will recieve
-variable vm_cores {
-  default = 1
-}
-# The amount of memory each Nginx virtual guest will recieve
-variable vm_memory {
-  default = 1024
-}
-# Tags which will be applied to the Nginx VMs
-variable vm_tags {
-  default = [
-    "nginx",
-    "interconnect2017demo"
-  ]
-}
-
-##############################################################################
-# Outputs: printed at the end of terraform apply
-##############################################################################
-output "node_ids" {
-    value = ["${ibmcloud_infra_virtual_guest.nginx_node.*.id}"]
-}
-output "loadbalancer_id" {
-    value = "${module.loadbalancer.loadbalancer_id}"
-}
-output "loadbalancer_address" {
-    value = "${module.loadbalancer.loadbalancer_address}"
-}
-
-##############################################################################
 # IBM SSH Key: For connecting to VMs
 # http://ibmcloudterraformdocs.chriskelner.com/docs/providers/ibmcloud/r/infra_ssh_key.html
 ##############################################################################
@@ -154,4 +84,74 @@ resource "ibmcloud_infra_lb_local_service" "nginx_lb_local_service" {
   ip_address_id = "${element(ibmcloud_infra_virtual_guest.nginx_node.*.ip_address_id, count.index)}"
   # For demonstration purposes; creates an explicit dependency
   depends_on = ["ibmcloud_infra_virtual_guest.nginx_node"]
+}
+
+##############################################################################
+# Variables
+##############################################################################
+# Required for the IBM Cloud provider
+variable ibmid {
+  type = "string"
+  description = "Your IBM-ID."
+}
+# Required for the IBM Cloud provider
+variable ibmidpw {
+  type = "string"
+  description = "The password for your IBM-ID."
+}
+# Required to target the correct SL account
+variable slaccountnum {
+  type = "string"
+  description = "Your Softlayer account number."
+}
+# The datacenter to deploy to
+variable datacenter {
+  default = "dal06"
+}
+# The SSH Key to use on the Nginx virtual machines
+# Defined in variables.tfvars
+variable public_key {
+  description = "Your public SSH key"
+}
+# The number of Nginx nodes to deploy; You can adjust this number to create more
+# virtual machines in the IBM Cloud; adjusting this number also updates the
+# loadbalancer with the new node
+variable node_count {
+  default = 2
+}
+# The target operating system for the Nginx nodes
+variable nginx_operating_system {
+  default = "UBUNTU_LATEST"
+}
+# The port that Nginx and the loadbalancer will serve traffic on
+variable port {
+  default = "80"
+}
+# The number of cores each Nginx virtual guest will recieve
+variable vm_cores {
+  default = 1
+}
+# The amount of memory each Nginx virtual guest will recieve
+variable vm_memory {
+  default = 1024
+}
+# Tags which will be applied to the Nginx VMs
+variable vm_tags {
+  default = [
+    "nginx",
+    "interconnect2017demo"
+  ]
+}
+
+##############################################################################
+# Outputs: printed at the end of terraform apply
+##############################################################################
+output "node_ids" {
+    value = ["${ibmcloud_infra_virtual_guest.nginx_node.*.id}"]
+}
+output "loadbalancer_id" {
+    value = "${module.loadbalancer.loadbalancer_id}"
+}
+output "loadbalancer_address" {
+    value = "${module.loadbalancer.loadbalancer_address}"
 }
