@@ -1,14 +1,12 @@
 # Load Balanced Nginx
 
-A Terraform configuration template to deploy an IBM Cloud local load balancer and _N_ number of nginx servers using a user supplied SSH key (public key material).
+A Terraform configuration template to deploy an IBM Cloud load balancer (as a service) and _N_ number of web servers.
 
 This template will create the following resources:
 
-- SSH Key
-- _N_ (default 2) Virtual Guests
-- Local Load Balancer
-- Local Load Balancer Service Group
-- _N_ (default 2) Local Load Balancer Service Group Services
+- _N_ (default 2) Virtual Guests acting as Web Servers
+- An IBM Cloud LBaaS
+- _N_ (default 2) An IBM Cloud LBaaS Service definitions
 
 # Architecture
 
@@ -32,16 +30,16 @@ This template will create the following resources:
        |                     |                         |
 +------v-------+     +-------v------+    +-------------v--+
 |              |     |              |    | +----------------+
-|              |     |              |    | | |----------------+
-|              |     |              |    | | |------------------+
-|  Nginx Server|     |  Nginx Server|    | | ||           | | | |
-|              |     |              |    | | || Nginx Server| | |
-|              |     |              |    | | ||           | | | |
-|              |     |              |    | | ||           | | | |
-+--------------+     +--------------+    +----------------+ | | |
-                                           +----------------+ | |
-                                             +----------------+ |
-                                              +-----------------+
+|              |     |              |    | | +----------------+
+|              |     |              |    | | | +-----------------+
+|  Web Server  |     |  Web Server  |    | | | |           | | | |
+|              |     |              |    | | | | Web Server| | | |
+|              |     |              |    | | | |           | | | |
+|              |     |              |    | | | |           | | | |
++--------------+     +--------------+    +-----------------+ | | |
+                                           +-----------------+ | |
+                                             +-----------------+ |
+                                              +------------------+
                                                N # of servers
 ```
 
@@ -57,6 +55,9 @@ You will need to [Setup up IBM Cloud provider credentials](#setting-up-provider-
 
 To run this project execute the following steps:
 
+- Obtain the SSH Key that is loaded into IBM Cloud that this module uses, or
+create and upload a new SSH Key to IBM Cloud and change the variable value of `ssh_key_id` in the `terraform.tfvars` file.
+  - Once you obtain the key you must load it into your ssh-agent. On OS X this can be done by placing the ssh key into your `~/.ssh` directory then adding it to your ssh agent by running: `ssh-add -K ~/.ssh/<keyname>` where `<keyname>` is the name of the file.
 - `terraform get`: this will get all referenced modules
 - `terraform plan`: this will perform a dry run to show what infrastructure terraform intends to create
 - `terraform apply`: this will create actual infrastructure
