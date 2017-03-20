@@ -55,9 +55,7 @@ You will need to [Setup up IBM Cloud provider credentials](#setting-up-provider-
 
 To run this project execute the following steps:
 
-- Obtain the SSH Key that is loaded into IBM Cloud that this module uses, or
-create and upload a new SSH Key to IBM Cloud and change the variable value of `ssh_key_id` in the `terraform.tfvars` file.
-  - Once you obtain the key you must load it into your ssh-agent. On OS X this can be done by placing the ssh key into your `~/.ssh` directory then adding it to your ssh agent by running: `ssh-add -K ~/.ssh/<keyname>` where `<keyname>` is the name of the file.
+- Change the `public_key` variable value in `terraform.tfvars` to some public key material of your own.
 - `terraform get`: this will get all referenced modules
 - `terraform plan`: this will perform a dry run to show what infrastructure terraform intends to create
 - `terraform apply`: this will create actual infrastructure

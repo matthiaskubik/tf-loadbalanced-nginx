@@ -11,6 +11,17 @@ provider "ibmcloud" {
 }
 
 ##############################################################################
+# IBM SSH Key: For connecting to VMs
+# http://ibmcloudterraformdocs.chriskelner.com/docs/providers/ibmcloud/r/infra_ssh_key.html
+##############################################################################
+resource "ibmcloud_infra_ssh_key" "ssh_key" {
+  label = "interconnect-2017"
+  notes = "interconnect-2017"
+  # Public key, so this is completely safe
+  public_key = "${var.public_key}"
+}
+
+##############################################################################
 # IBM Virtual Guests -- Web Resource Definition
 # http://ibmcloudterraformdocs.chriskelner.com/docs/providers/ibmcloud/r/infra_virtual_guest.html
 ##############################################################################
@@ -28,7 +39,9 @@ resource "ibmcloud_infra_virtual_guest" "web_node" {
   cores                = "${var.vm_cores}"
   memory               = "${var.vm_memory}"
   local_disk           = true
-  ssh_key_ids = [ "${var.ssh_key_id}" ]
+  ssh_key_ids = [
+    "${ibmcloud_infra_ssh_key.ssh_key.id}"
+  ]
   # Installs nginx web server on our VM via SSH
   provisioner "remote-exec" {
     inline = [
@@ -95,10 +108,11 @@ variable slaccountnum {
 variable datacenter {
   default = "dal06"
 }
-# The SSH Key to use on the virtual machines
-# This resource is created manually outside Terraform, as there are some
-# limitations with the API surrounding this resource
-variable ssh_key_id { }
+# The SSH Key to use on the Nginx virtual machines
+# Defined in terraform.tfvars
+variable public_key {
+  description = "Your public SSH key"
+}
 # The number of web nodes to deploy; You can adjust this number to create more
 # virtual machines in the IBM Cloud; adjusting this number also updates the
 # loadbalancer with the new node
