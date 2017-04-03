@@ -188,4 +188,4 @@ If you run into this error, you should reset your IBMid password by navigating t
 
 # Video
 
-A simple video showing Terraform execution of this template: https://www.youtube.com/embed/vTKeWTfalTU
+A simple video showing Terraform execution of this template: https://youtu.be/vTKeWTfalTU
