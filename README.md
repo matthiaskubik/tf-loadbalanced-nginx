@@ -185,3 +185,9 @@ And if your credentials are wrong, you will get a different response:
 ```
 
 If you run into this error, you should reset your IBMid password by navigating to https://www.ibm.com/account/profile/us and clicking on "Reset password"
+
+# Video
+
+A simple video showing Terraform execution of this template.
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/vTKeWTfalTU" frameborder="0" allowfullscreen></iframe>
